@@ -1,0 +1,1 @@
+import bdd from '../configuration/db.js';

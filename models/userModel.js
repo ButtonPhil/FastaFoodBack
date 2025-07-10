@@ -1,23 +1,13 @@
 import bdd from '../configuration/db.js';
 
 //  requette creation dans la base de donner de l'employer
-export const addUser = (lastName, firstName, role) => {
+export const addUser = (lastName, firstName, role, email, cryptPass) => {
 
     console.log("je suis dans le modèle");
-    const addEmploy = "INSERT INTO Employ (lastName, firstName, role) value (?,?,?)";
+    const addEmploy = "INSERT INTO Employ (lastName, firstName, role, email, password) value (?,?,?,?,?)";
 
+    return bdd.query(addEmploy, [lastName, firstName, role, email, cryptPass]);
 
-    return bdd.query(addEmploy, [lastName, firstName, role]);
-
-
-}
-
-//  requette creation dans la base de donner info employer 
-export const addEmailUser = (email, cryptPass) => {
-
-    const addLooper = "INSERT INTO looper (email, password) value (?,?)";
-
-    return bdd.query(addLooper, [email, cryptPass])
 }
 
 
@@ -34,6 +24,7 @@ export const employUpdate = (lastName, firstName, role, idEmploy) => {
     const upEmploy = "UPDATE employ SET lastName = ?, firstName = ?, role = ? where idEmploy = ?;";
 
     return bdd.query(upEmploy, [lastName, firstName, role, idEmploy])
+
 }
 
 
@@ -47,7 +38,43 @@ export const employDelete = (idEmploy) => {
 
 export const loginEmploy = (email) => {
     
-    const selectEmploy = "SELECT idEmploy, lastName, password from looper join to employ on idLooper = looperId where mail like ?;";
+    const selectEmploy = "SELECT idEmploy, lastName, password from employ where email like ?;";
 
     return bdd.query(selectEmploy, [email]);
+
+}
+
+export const getProfileUser = (userId) => {
+    
+    const getProfile = "SELECT idEmploy, name, mail FROM users WHERE idUser = ?;";
+
+    // Exécute la requête de sélection avec l'ID utilisateur fourni
+    return bdd.query(getProfile, [userId]);
+
+}
+
+
+export const updateUserProfile = (lastName, email, userId) => {
+
+    const updateUser = "UPDATE employ SET lastName = ?, email = ? WHERE idEmploy = ?;";
+    
+    return bdd.query(updateUser, [lastName, email, userId]);
+
+}
+
+export const getUserPassword = (idUser) => {
+
+    const selectUser = "SELECT password FROM employ WHERE idEmploy = ?;";
+
+    return bdd.query(selectUser, [idUser])
+
+}
+
+export const updateUserPassword = (cryptedNewPassword, userId) => {
+     // préparation de la requete de mise à jour
+    const updatePassword = "UPDATE employ SET password = ? WHERE idEmploy = ?;";
+
+    // Exécute la requête de mise à jour avec le nouveau mot de passe et l'ID utilisateur
+    return bdd.query(updatePassword, [cryptedNewPassword, userId]);
+
 }
