@@ -27,6 +27,7 @@ export const register = async (req, res) => {
         // console.log(error);
 
     }
+
 }
 
 export const getEmploy = async (req, res) => {
@@ -34,8 +35,10 @@ export const getEmploy = async (req, res) => {
     try {
 
         const [result] = await userModels.employGet();
+
         res.status(201);
         res.json({
+
             message: "liste employer",
 
             employ: result
@@ -55,31 +58,50 @@ export const getEmploy = async (req, res) => {
 
 export const updateEmploy = async (req, res) => {
 
-
     const userId = req.user.idEmploy;
+    const userRole = req.user.role
 
     const { lastName, firstName, role } = req.body;
 
     try {
 
-        await userModels.employUpdate(lastName, firstName, role, userId);
-        res.status(200).json({ message: " Modification effectuer" })
+        if (userRole === "admin") {
+
+            await userModels.employUpdate(lastName, firstName, role, userId);
+            res.status(200).json({ message: " Modification effectuer" })
+
+        } else {
+
+            res.status(403).json({ message: "accès refusé" });
+
+        }
 
     } catch (error) {
 
         res.status(500).json({ message: "erreur lors de la modification", error });
         console.log(error);
+
     }
+
 }
 
 export const deleteEmploy = async (req, res) => {
 
     const userId = req.user.idEmploy;
+    const userRole = req.user.role;
 
     try {
 
-        await userModels.employDelete(userId);
-        res.status(200).json({ message: "Suppression faite" });
+        if (userRole === "admin") {
+
+            await userModels.employDelete(userId);
+            res.status(200).json({ message: "Suppression faite" });
+
+        } else {
+
+            res.status(403).json({ message: "accès refusé" });
+
+        }
 
     } catch (error) {
 
@@ -87,34 +109,30 @@ export const deleteEmploy = async (req, res) => {
         console.log(error);
 
     }
+
 }
 
 
 export const login = async (req, res) => {
 
     const { email, password } = req.body;
-    console.log(password);
-
 
     try {
         // appel de la fonction loginUser du modèle userModels
         // cette fonction permet de récupérer les données de l'utilisateur à partir de son mail
         const [result] = await userModels.loginEmploy(email);
 
-
         const employData = result[0];
-        // console.log(result[0]);
-
 
         if (result) {
 
             const checkPassword = await bcrypt.compare(password, employData.password);
             // console.log(checkPassword);
-
+            
             if (checkPassword == true) {
-
+                
                 // création du token
-                const token = jwt.sign({ idEmploy: employData.idEmploy, username: employData.lastName }, process.env.SECRET_KEY, { expiresIn: "6h" });
+                const token = jwt.sign({ idEmploy: employData.idEmploy, username: employData.lastName, userRole: employData.role }, process.env.SECRET_KEY, { expiresIn: "6h" });
 
                 res.status(201).json({
                     message: "connexion autorisé",
@@ -134,6 +152,7 @@ export const login = async (req, res) => {
         console.log(error);
 
     }
+
 }
 
 export const getProfile = async (req, res) => {

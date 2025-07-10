@@ -28,6 +28,7 @@ const checkToken = (req, res, next) => {
         // si le token est valide, on passe à la suite       
         req.user = decoded;
         next();
+        // console.log(req.user);
 
     });
     

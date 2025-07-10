@@ -38,7 +38,7 @@ export const employDelete = (userId) => {
 
 export const loginEmploy = (email) => {
     
-    const selectEmploy = "SELECT idEmploy, lastName, password from employ where email like ?;";
+    const selectEmploy = "SELECT idEmploy, lastName, password, role from employ where email like ?;";
 
     return bdd.query(selectEmploy, [email]);
 
