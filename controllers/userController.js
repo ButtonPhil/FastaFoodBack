@@ -56,13 +56,13 @@ export const getEmploy = async (req, res) => {
 export const updateEmploy = async (req, res) => {
 
 
-    const idEmploy = req.params.idEmploy
+    const userId = req.user.idEmploy;
 
     const { lastName, firstName, role } = req.body;
 
     try {
 
-        await userModels.employUpdate(lastName, firstName, role, idEmploy);
+        await userModels.employUpdate(lastName, firstName, role, userId);
         res.status(200).json({ message: " Modification effectuer" })
 
     } catch (error) {
@@ -74,16 +74,16 @@ export const updateEmploy = async (req, res) => {
 
 export const deleteEmploy = async (req, res) => {
 
-    const idEmploy = req.params.idEmploy
-    
+    const userId = req.user.idEmploy;
+
     try {
 
-        await userModels.employDelete(idEmploy);
-        res.status(200).json({ message: "Suppression faite"});
+        await userModels.employDelete(userId);
+        res.status(200).json({ message: "Suppression faite" });
 
     } catch (error) {
 
-        res.status(500).json({ message: "erreur lors de la suppression", error});
+        res.status(500).json({ message: "erreur lors de la suppression", error });
         console.log(error);
 
     }
@@ -92,56 +92,56 @@ export const deleteEmploy = async (req, res) => {
 
 export const login = async (req, res) => {
 
-    const {email, password} = req.body;
-     console.log(password);
-    
+    const { email, password } = req.body;
+    console.log(password);
 
-    try{
+
+    try {
         // appel de la fonction loginUser du modèle userModels
         // cette fonction permet de récupérer les données de l'utilisateur à partir de son mail
         const [result] = await userModels.loginEmploy(email);
-        
-    
+
+
         const employData = result[0];
         // console.log(result[0]);
-        
 
-        if (result){
+
+        if (result) {
 
             const checkPassword = await bcrypt.compare(password, employData.password);
             // console.log(checkPassword);
-            
-            if (checkPassword == true){
+
+            if (checkPassword == true) {
 
                 // création du token
-                const token = jwt.sign({idEmploy: employData.idEmploy, username: employData.lastName}, process.env.SECRET_KEY, {expiresIn: "6h"});
+                const token = jwt.sign({ idEmploy: employData.idEmploy, username: employData.lastName }, process.env.SECRET_KEY, { expiresIn: "6h" });
 
                 res.status(201).json({
                     message: "connexion autorisé",
                     token: token
                 });
             } else {
-                res.status(403).json({message: "accès refusé"});
+                res.status(403).json({ message: "accès refusé" });
             }
 
         } else {
-            res.status(104).json({message: "utilisateur inconnu"})
+            res.status(104).json({ message: "utilisateur inconnu" })
         }
 
     } catch (error) {
 
-        res.status(500).json({message: "erreur lors de la connexion", error})
+        res.status(500).json({ message: "erreur lors de la connexion", error })
         console.log(error);
 
     }
 }
 
 export const getProfile = async (req, res) => {
-        // récupération de l'id de l'utilisateur à partir du token
+    // récupération de l'id de l'utilisateur à partir du token
     // le token est vérifié par le middleware checkToken
     const userId = req.user.idEmploy;
 
-     try {
+    try {
 
         const [result] = await userModels.getProfileUser(userId);
 
@@ -151,12 +151,12 @@ export const getProfile = async (req, res) => {
 
         } else {
 
-            res.status(404).json({message: "utilisateur non trouvé"});
+            res.status(404).json({ message: "utilisateur non trouvé" });
         }
 
     } catch (error) {
 
-        res.status(500).json({message: "erreur lors de la récupération du profil", error});
+        res.status(500).json({ message: "erreur lors de la récupération du profil", error });
         console.log(error);
 
     }
@@ -164,21 +164,21 @@ export const getProfile = async (req, res) => {
 }
 
 export const updateProfile = async (req, res) => {
-     // récupération de l'id de l'utilisateur à partir du token
+    // récupération de l'id de l'utilisateur à partir du token
     const userId = req.user.idEmploy;
-   
+
     // récupération des informations à mettre à jour
-    const {lastName, email} = req.body;
+    const { lastName, email } = req.body;
 
     try {
         // utilisation de la connexion bdd pour executer la requete
         await userModels.updateUserProfile(lastName, email, userId);
         // envoi de la réponse
-        res.status(200).json({message: "profil mis à jour"});
+        res.status(200).json({ message: "profil mis à jour" });
 
     } catch (error) {
 
-        res.status(500).json({message: "erreur lors de la mise à jour du profil", error});
+        res.status(500).json({ message: "erreur lors de la mise à jour du profil", error });
         console.log(error);
 
     }
@@ -189,9 +189,9 @@ export const updatePassword = async (req, res) => {
 
     // récupération de l'id de l'utilisateur à partir du token
     const userId = req.user.idEmploy;
-   
+
     // récupération des informations à mettre à jour
-    const {oldPassword, newPassword} = req.body;
+    const { oldPassword, newPassword } = req.body;
 
     try {
         // récupération de l'utilisateur pour vérifier l'ancien mot de passe
@@ -208,23 +208,23 @@ export const updatePassword = async (req, res) => {
                 const cryptedNewPassword = await bcrypt.hashSync(newPassword, 10);
                 // utilisation de la connexion bdd pour executer la requete
                 await userModels.updateUserPassword(cryptedNewPassword, userId);
-                res.status(200).json({message: "mot de passe mis à jour"});
+                res.status(200).json({ message: "mot de passe mis à jour" });
 
             } else {
 
-                res.status(403).json({message: "ancien mot de passe incorrect"});
+                res.status(403).json({ message: "ancien mot de passe incorrect" });
 
             }
         } else {
 
-            res.status(404).json({message: "utilisateur non trouvé"});
+            res.status(404).json({ message: "utilisateur non trouvé" });
 
         }
-        
+
     } catch (error) {
 
-        res.status(500).json({message: "erreur lors de la mise à jour du mot de passe", error});
+        res.status(500).json({ message: "erreur lors de la mise à jour du mot de passe", error });
         console.log(error);
-        
+
     }
 }

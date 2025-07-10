@@ -11,17 +11,24 @@ const checkToken = (req, res, next) => {
 
     // si le token n'est pas présent, on renvoie une erreur
     if (!token) {
+
         return res.status(403).json({ message: "Token manquant" });
+        
     }
 
     // vérification du token
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+
         if (err) {
+
             return res.status(401).json({ message: "Token invalide" });
+
         }
+
         // si le token est valide, on passe à la suite       
         req.user = decoded;
         next();
+
     });
     
 }

@@ -8,11 +8,12 @@ dotenv.config();
 
 export const productsRegister = async (req, res) => {
 
+    
     const { productsName, category, unit, quantiteStock, minimumTheshold } = req.body;
 
     try {
 
-        
+
 
     } catch (error) {
 

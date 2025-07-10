@@ -19,20 +19,20 @@ export const employGet = () => {
 }
 
 
-export const employUpdate = (lastName, firstName, role, idEmploy) => {
+export const employUpdate = (lastName, firstName, role, userId) => {
 
     const upEmploy = "UPDATE employ SET lastName = ?, firstName = ?, role = ? where idEmploy = ?;";
 
-    return bdd.query(upEmploy, [lastName, firstName, role, idEmploy])
+    return bdd.query(upEmploy, [lastName, firstName, role, userId])
 
 }
 
 
-export const employDelete = (idEmploy) => {
+export const employDelete = (userId) => {
 
     const deleteEmp = "DELETE FROM employ WHERE idEmploy = ?";
 
-    return bdd.query(deleteEmp, [idEmploy]);
+    return bdd.query(deleteEmp, [userId]);
 
 }
 
