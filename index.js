@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import bdd from "./configuration/db.js";
 import userRoutes from './routes/userRoutes.js';
 import productsRoute from "./routes/productsRoute.js";
-
+import orderRoute from "./routes/orderRoute.js";
 
 const app = express();
 
@@ -13,7 +13,7 @@ app.use(express.json());
 
 dotenv.config();
 
-app.use('/fastafood', userRoutes, productsRoute);
+app.use('/fastafood', userRoutes, productsRoute, orderRoute);
 
 app.listen(process.env.PORT, () => {
 

@@ -42,7 +42,6 @@ export const getEmploy = async (req, res) => {
             message: "liste employer",
 
             employ: result
-
         });
 
     } catch (error) {
@@ -54,12 +53,10 @@ export const getEmploy = async (req, res) => {
 
 }
 
-
-
 export const updateEmploy = async (req, res) => {
 
-    const userId = req.user.idEmploy;
-    const userRole = req.user.role
+    const userId = req.result.idEmploy;
+    const userRole = req.user.userRole
 
     const { lastName, firstName, role } = req.body;
 
@@ -87,8 +84,8 @@ export const updateEmploy = async (req, res) => {
 
 export const deleteEmploy = async (req, res) => {
 
-    const userId = req.user.idEmploy;
-    const userRole = req.user.role;
+    const userId = req.result.idEmploy;
+    const userRole = req.user.userRole;
 
     try {
 
@@ -128,9 +125,9 @@ export const login = async (req, res) => {
 
             const checkPassword = await bcrypt.compare(password, employData.password);
             // console.log(checkPassword);
-            
+
             if (checkPassword == true) {
-                
+
                 // création du token
                 const token = jwt.sign({ idEmploy: employData.idEmploy, username: employData.lastName, userRole: employData.role }, process.env.SECRET_KEY, { expiresIn: "6h" });
 

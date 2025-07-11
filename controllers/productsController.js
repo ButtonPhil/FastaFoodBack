@@ -51,7 +51,7 @@ export const getProducts = async (req, res) => {
 
 export const updateProducts = async (req, res) => {
 
-    const idProduct = req.params.idProduct
+    const idProduct = req.result.idProduct;
     const userRole = req.user.userRole;
     const { productName, category, unit, quantityStock, minimumThreshold } = req.body;
     
@@ -59,8 +59,8 @@ export const updateProducts = async (req, res) => {
 
         if (userRole === "admin") {
 
-            await productsModel.productsUpdate( idProduct, productName, category, unit, quantityStock, minimumThreshold );
-            res.status(200).json({ message: "Modification effectuer" })
+            const response = await productsModel.productsUpdate( idProduct, productName, category, unit, quantityStock, minimumThreshold );
+            res.status(200).json({ message: "Modification effectuer", response : response})
 
         } else {
 
