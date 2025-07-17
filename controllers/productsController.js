@@ -57,7 +57,7 @@ export const updateProducts = async (req, res) => {
     
     try {
 
-        if (userRole === "admin") {
+        if (userRole === "manager" || userRole === "admin") {
 
             const response = await productsModel.productsUpdate( idProduct, productName, category, unit, quantityStock, minimumThreshold );
             res.status(200).json({ message: "Modification effectuer", response : response})
@@ -79,14 +79,16 @@ export const updateProducts = async (req, res) => {
 
 export const productsDelete = async (req, res) => {
 
-    const userRole = req.user.role;
-    const { idProduct } = req.body;
+    const userRole = req.user.userRole;
+    const idProduct = req.params.idProduct;
 
     try {
 
         if (userRole === "admin") {
 
             await productsModel.deleteProduct(idProduct);
+           
+            
             res.status(200).json({ message: "Suppression faite" });
 
         } else {

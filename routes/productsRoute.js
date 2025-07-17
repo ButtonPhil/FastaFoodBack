@@ -13,7 +13,7 @@ router.post('/products', checkToken, registerProducts)
 
 router.get('/products', checkToken, getProducts)
 
-router.delete('/products/delete', productsDelete)
+router.delete('/products/delete/:idProduct', checkToken, productsDelete)
 
 router.put('/products/:idProduct',checkToken, updateProducts)
 
