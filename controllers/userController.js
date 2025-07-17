@@ -55,7 +55,7 @@ export const getEmploy = async (req, res) => {
 
 export const updateEmploy = async (req, res) => {
 
-    const userId = req.result.idEmploy;
+    const userId = req.params;
     const userRole = req.user.userRole
 
     const { lastName, firstName, role } = req.body;
@@ -84,21 +84,14 @@ export const updateEmploy = async (req, res) => {
 
 export const deleteEmploy = async (req, res) => {
 
-    const userId = req.result.idEmploy;
-    const userRole = req.user.userRole;
+    const userId = req.params.idEmploy
+
+    // console.log(userId)
 
     try {
 
-        if (userRole === "admin") {
-
-            await userModels.employDelete(userId);
-            res.status(200).json({ message: "Suppression faite" });
-
-        } else {
-
-            res.status(403).json({ message: "accès refusé" });
-
-        }
+        await userModels.employDelete(userId);
+        res.status(200).json({ message: "Suppression faite" });
 
     } catch (error) {
 
@@ -153,9 +146,9 @@ export const login = async (req, res) => {
 }
 
 export const getProfile = async (req, res) => {
-    // récupération de l'id de l'utilisateur à partir du token
+    // récupération de l'id de l'utilisateur à partir du token grace à user
     // le token est vérifié par le middleware checkToken
-    const userId = req.user.idEmploy;
+    const userId = req.user.idEmploy
 
     try {
 
@@ -183,12 +176,15 @@ export const updateProfile = async (req, res) => {
     // récupération de l'id de l'utilisateur à partir du token
     const userId = req.user.idEmploy;
 
+
     // récupération des informations à mettre à jour
-    const { lastName, email } = req.body;
+    const email = req.body.email;
+
+
 
     try {
         // utilisation de la connexion bdd pour executer la requete
-        await userModels.updateUserProfile(lastName, email, userId);
+        await userModels.updateUserProfile(email, userId);
         // envoi de la réponse
         res.status(200).json({ message: "profil mis à jour" });
 
@@ -216,6 +212,7 @@ export const updatePassword = async (req, res) => {
         if (result.length > 0) {
 
             const userData = result[0];
+            
             // vérification de l'ancien mot de passe
             const checkOldPassword = await bcrypt.compare(oldPassword, userData.password);
 

@@ -5,13 +5,13 @@ import { register, getEmploy, updateEmploy, deleteEmploy, login, getProfile, upd
 
 const router = express.Router();
 
-router.post('/employ', register)
+router.post('/createEmploy', register)
 
 router.get('/employ',checkToken, getEmploy)
 
 router.put('/employ/:idEmploy',checkToken, updateEmploy)
 
-router.delete('/employ/:idEmploy',checkToken, deleteEmploy)
+router.delete('/deleteEmploy/:idEmploy',checkToken, deleteEmploy)
 
 router.post('/login', login);
     

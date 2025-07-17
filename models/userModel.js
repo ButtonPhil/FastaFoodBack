@@ -46,7 +46,7 @@ export const loginEmploy = (email) => {
 
 export const getProfileUser = (userId) => {
     
-    const getProfile = "SELECT idEmploy, name, mail FROM users WHERE idUser = ?;";
+    const getProfile = "SELECT idEmploy, lastName, firstName, email, role FROM employ WHERE idEmploy = ?;";
 
     // Exécute la requête de sélection avec l'ID utilisateur fourni
     return bdd.query(getProfile, [userId]);
@@ -54,11 +54,11 @@ export const getProfileUser = (userId) => {
 }
 
 
-export const updateUserProfile = (lastName, email, userId) => {
+export const updateUserProfile = (email, userId) => {
 
-    const updateUser = "UPDATE employ SET lastName = ?, email = ? WHERE idEmploy = ?;";
+    const updateUser = "UPDATE employ SET email = ? WHERE idEmploy = ?;";
     
-    return bdd.query(updateUser, [lastName, email, userId]);
+    return bdd.query(updateUser, [email, userId]);
 
 }
 
