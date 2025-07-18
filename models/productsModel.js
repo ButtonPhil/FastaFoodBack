@@ -17,14 +17,14 @@ export const productsGet = () => {
     return bdd.query(listProducts)
 }
 
-export const productsUpdate = (idProduct, category, unit, quantityStock, minimumThreshold, unitPrice) => {
+export const productsUpdate = (idProduct, updatedCategory, updatedUnit,  updatedQuantityStock, updatedMinimumThreshold, updatedUnitPrice) => {
 
-    console.log(idProduct, category, unit, quantityStock, minimumThreshold);
+    console.log(idProduct, updatedCategory, updatedUnit,  updatedQuantityStock, updatedMinimumThreshold, updatedUnitPrice);
 
-    const upProducts = "UPDATE products SET productName = ?, category = ?, unit = ?, quantityStock = ?, minimumThreshold = ?, unitPrice = ?  where idProduct = ?";
+    const upProducts = "UPDATE products SET category = ?, unit = ?, quantityStock = ?, minimumThreshold = ?, unitPrice = ?  where idProduct = ?";
 
     
-    const response =  bdd.query(upProducts, [ category, unit, quantityStock, minimumThreshold, unitPrice, idProduct]);
+    const response =  bdd.query(upProducts, [ updatedCategory, updatedUnit,  updatedQuantityStock, updatedMinimumThreshold, updatedUnitPrice, idProduct]);
 
     console.log(response);
 

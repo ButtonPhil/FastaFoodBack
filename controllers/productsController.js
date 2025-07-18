@@ -53,28 +53,28 @@ export const updateProducts = async (req, res) => {
 
     const idProduct = req.params.idProduct;
     const userRole = req.user.userRole;
-    // const {category, unit, quantityStock, minimumThreshold, unitPrice } = req.body;
-    console.log(req.body);
+    const {updatedCategory, updatedUnit,  updatedQuantityStock, updatedMinimumThreshold, updatedUnitPrice} = req.body;
+    console.log(req.params);
     
-    // try {
+    try {
 
-    //     if (userRole === "manager" || userRole === "admin") {
+        if (userRole === "manager" || userRole === "admin") {
 
-    //         const response = await productsModel.productsUpdate( idProduct, category, unit, quantityStock, minimumThreshold, unitPrice );
-    //         res.status(200).json({ message: "Modification effectuer", response : response})
+            const response = await productsModel.productsUpdate(idProduct, updatedCategory, updatedUnit,  updatedQuantityStock, updatedMinimumThreshold, updatedUnitPrice);
+            res.status(200).json({ message: "Modification effectuer", response : response})
 
-    //     } else {
+        } else {
 
-    //         res.status(403).json({ message: "accès refusé" });
+            res.status(403).json({ message: "accès refusé" });
 
-    //     }
+        }
 
-    // } catch (error) {
+    } catch (error) {
 
-    //     res.status(500).json({ message: "erreur lors de la modification", error });
-    //     console.log(error);
+        res.status(500).json({ message: "erreur lors de la modification", error });
+        console.log(error);
 
-    // }
+    }
 
 }
 
