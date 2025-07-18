@@ -1,5 +1,5 @@
 import express from 'express';
-import { getProducts, productsDelete, registerProducts, updateProducts } from '../controllers/productsController.js';
+import { getProducts, getProfilProd, productsDelete, registerProducts, updateProducts } from '../controllers/productsController.js';
 import checkToken from '../middlewares/auth.js';
 
 
@@ -17,7 +17,7 @@ router.delete('/products/delete/:idProduct', checkToken, productsDelete)
 
 router.put('/products/:idProduct',checkToken, updateProducts)
 
-
+router.get('/profilProduct/:idProduct', checkToken, getProfilProd)
 
 
 export default router;
