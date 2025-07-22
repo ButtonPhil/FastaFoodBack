@@ -19,7 +19,7 @@ export const register = async (req, res) => {
 
         await userModels.addUser(lastName, firstName, role, email, cryptPass);
 
-        res.status(201).json({ message: "utilisateur créé" });
+        res.status(200).json({ message: "utilisateur créé" });
 
     } catch (error) {
 
@@ -36,7 +36,7 @@ export const getEmploy = async (req, res) => {
 
         const [result] = await userModels.employGet();
 
-        res.status(201);
+        res.status(200);
         res.json({
 
             message: "liste employer",
@@ -124,7 +124,7 @@ export const login = async (req, res) => {
                 // création du token
                 const token = jwt.sign({ idEmploy: employData.idEmploy, username: employData.lastName, userRole: employData.role }, process.env.SECRET_KEY, { expiresIn: "6h" });
 
-                res.status(201).json({
+                res.status(200).json({
                     message: "connexion autorisé",
                     token: token
                 });
@@ -138,7 +138,7 @@ export const login = async (req, res) => {
 
     } catch (error) {
 
-        res.status(500).json({ message: "erreur lors de la connexion", error })
+        res.status(500).json({ error })
         console.log(error);
 
     }

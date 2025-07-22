@@ -13,7 +13,7 @@ export const addUser = (lastName, firstName, role, email, cryptPass) => {
 
 export const employGet = () => {
 
-    const listEmploy = "SELECT idEmploy, lastName, firstName, role from employ ";
+    const listEmploy = "SELECT idEmploy, lastName, firstName, email, role from employ ";
 
     return bdd.query(listEmploy)
 }

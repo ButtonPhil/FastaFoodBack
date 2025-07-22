@@ -5,6 +5,8 @@ import { register, getEmploy, updateEmploy, deleteEmploy, login, getProfile, upd
 
 const router = express.Router();
 
+router.post('/login', login);
+
 router.post('/createEmploy', register)
 
 router.get('/employ',checkToken, getEmploy)
@@ -12,8 +14,6 @@ router.get('/employ',checkToken, getEmploy)
 router.put('/employ/:idEmploy',checkToken, updateEmploy)
 
 router.delete('/deleteEmploy/:idEmploy',checkToken, deleteEmploy)
-
-router.post('/login', login);
     
 router.get('/profile', checkToken, getProfile);
 
